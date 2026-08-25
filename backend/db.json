@@ -1,0 +1,641 @@
+{
+  "users": [
+    {
+      "id": "CL-P10234",
+      "name": "Saran Kumar",
+      "role": "patient",
+      "email": "saran@example.com",
+      "password": "password123",
+      "phone": "+91 98765 43210",
+      "age": 42,
+      "gender": "Male",
+      "roomNo": "Bed 4B, Ward 3",
+      "surgery": "Post-Operative Cardiac Bypass (Day 3)",
+      "admissionDate": "2026-08-10",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250"
+    },
+    {
+      "id": "CL-D1021",
+      "name": "Dr. Kumar Rajan",
+      "role": "doctor",
+      "title": "Chief Cardiac Surgeon, MD",
+      "email": "dr.kumar@carelink.org",
+      "password": "password123",
+      "phone": "+91 94433 22110",
+      "hospital": "Metropolitan General Hospital",
+      "avatar": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=250"
+    },
+    {
+      "id": "CL-N2042",
+      "name": "Nurse Priya Sharma",
+      "role": "nurse",
+      "title": "Senior ICU/Post-Op Specialist",
+      "email": "priya.n@carelink.org",
+      "password": "password123",
+      "phone": "+91 91234 56789",
+      "department": "Post-Operative Recovery Ward B",
+      "avatar": "https://images.unsplash.com/photo-1594824813571-215f396469a0?auto=format&fit=crop&q=80&w=250"
+    },
+    {
+      "id": "CL-G3045",
+      "name": "Ramesh Kumar (Brother)",
+      "role": "guardian",
+      "hasAccount": true,
+      "email": "ramesh.k@example.com",
+      "password": "password123",
+      "phone": "+91 98765 11223",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=250"
+    },
+    {
+      "id": "CL-G3001",
+      "name": "Anita Sharma",
+      "role": "guardian",
+      "hasAccount": true,
+      "email": "anita@example.com",
+      "password": "password123",
+      "phone": "+91 98765 43211",
+      "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=250"
+    },
+    {
+      "id": "CL-D3001",
+      "name": "Dr. Neha Verma",
+      "role": "doctor",
+      "title": "Cardiologist, MD",
+      "email": "neha.verma@example.com",
+      "password": "password123",
+      "phone": "+91 98765 43212",
+      "hospital": "Metropolitan General Hospital",
+      "avatar": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=250"
+    },
+    {
+      "id": "CL-N3001",
+      "name": "Nurse Maya",
+      "role": "nurse",
+      "title": "ICU Charge Nurse",
+      "email": "maya.nurse@example.com",
+      "password": "password123",
+      "phone": "+91 98765 43213",
+      "department": "Ward 3",
+      "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=250"
+    },
+    {
+      "id": "CL-P12671",
+      "name": "Saran",
+      "email": "saran@gmail.com",
+      "password": "Saran",
+      "role": "patient",
+      "phone": "7598974652",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250",
+      "age": 30,
+      "gender": "Male",
+      "admissionDate": "2026-08-21"
+    },
+    {
+      "id": "CL-P32836",
+      "name": "john",
+      "email": "john@gmail.com",
+      "password": "John",
+      "role": "patient",
+      "phone": "9095521870",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250",
+      "age": 56,
+      "gender": "Male",
+      "admissionDate": "2026-08-21"
+    }
+  ],
+  "careTeams": {
+    "CL-P10234": [
+      {
+        "id": "CL-G3045",
+        "name": "Ramesh Kumar (Brother)",
+        "role": "Guardian",
+        "phone": "+91 98765 11223",
+        "status": "CONNECTED",
+        "hasAccount": true
+      },
+      {
+        "id": "CL-D1021",
+        "name": "Dr. Kumar Rajan",
+        "role": "Doctor",
+        "phone": "+91 94433 22110",
+        "status": "CONNECTED",
+        "hasAccount": true
+      },
+      {
+        "id": "CL-N2042",
+        "name": "Nurse Priya Sharma",
+        "role": "Nurse",
+        "phone": "+91 91234 56789",
+        "status": "CONNECTED",
+        "hasAccount": true
+      },
+      {
+        "id": "CL-G-SMS-6958",
+        "name": "Appa",
+        "role": "Guardian",
+        "phone": "9095521570",
+        "status": "CONNECTED",
+        "hasAccount": false
+      },
+      {
+        "id": "CL-G-SMS-7868",
+        "name": "Mom",
+        "role": "Guardian",
+        "phone": "9095521570",
+        "status": "CONNECTED",
+        "hasAccount": false
+      }
+    ]
+  },
+  "requests": [
+    {
+      "id": "REQ-101",
+      "senderId": "CL-D1021",
+      "senderName": "Dr. Kumar Rajan",
+      "senderRole": "doctor",
+      "receiverId": "CL-P10234",
+      "receiverName": "Saran Kumar",
+      "receiverRole": "patient",
+      "status": "CONNECTED",
+      "type": "DOCTOR_PATIENT",
+      "timestamp": "2026-08-11 09:30 AM"
+    },
+    {
+      "id": "REQ-102",
+      "senderId": "CL-N2042",
+      "senderName": "Nurse Priya Sharma",
+      "senderRole": "nurse",
+      "receiverId": "CL-P10234",
+      "receiverName": "Saran Kumar",
+      "receiverRole": "patient",
+      "status": "CONNECTED",
+      "type": "NURSE_PATIENT",
+      "timestamp": "2026-08-11 10:15 AM"
+    },
+    {
+      "id": "REQ-103",
+      "senderId": "CL-P10234",
+      "senderName": "Saran Kumar",
+      "senderRole": "patient",
+      "receiverId": "CL-G3045",
+      "receiverName": "Ramesh Kumar",
+      "receiverRole": "guardian",
+      "status": "CONNECTED",
+      "type": "PATIENT_GUARDIAN",
+      "timestamp": "2026-08-10 04:00 PM"
+    }
+  ],
+  "vitals": {
+    "CL-P10234": {
+      "heartRate": 80,
+      "spo2": 96,
+      "temperature": 36.7,
+      "systolic": 100,
+      "diastolic": 80,
+      "lastUpdated": "11:04:56 pm",
+      "status": "NORMAL"
+    }
+  },
+  "vitalsHistory": {
+    "CL-P10234": [
+      {
+        "timestamp": "02:00",
+        "fullTime": "02:04 am",
+        "heartRate": 74,
+        "spo2": 97,
+        "temperature": 36.3,
+        "systolic": 118,
+        "diastolic": 78
+      },
+      {
+        "timestamp": "03:00",
+        "fullTime": "03:04 am",
+        "heartRate": 77,
+        "spo2": 98,
+        "temperature": 36.3,
+        "systolic": 123,
+        "diastolic": 79
+      },
+      {
+        "timestamp": "04:00",
+        "fullTime": "04:04 am",
+        "heartRate": 80,
+        "spo2": 97,
+        "temperature": 36.4,
+        "systolic": 124,
+        "diastolic": 80
+      },
+      {
+        "timestamp": "05:00",
+        "fullTime": "05:04 am",
+        "heartRate": 80,
+        "spo2": 98,
+        "temperature": 36.4,
+        "systolic": 125,
+        "diastolic": 81
+      },
+      {
+        "timestamp": "06:00",
+        "fullTime": "06:04 am",
+        "heartRate": 78,
+        "spo2": 97,
+        "temperature": 36.3,
+        "systolic": 124,
+        "diastolic": 82
+      },
+      {
+        "timestamp": "07:00",
+        "fullTime": "07:04 am",
+        "heartRate": 79,
+        "spo2": 97,
+        "temperature": 36.4,
+        "systolic": 123,
+        "diastolic": 80
+      },
+      {
+        "timestamp": "08:00",
+        "fullTime": "08:04 am",
+        "heartRate": 74,
+        "spo2": 97,
+        "temperature": 36.4,
+        "systolic": 123,
+        "diastolic": 79
+      },
+      {
+        "timestamp": "09:00",
+        "fullTime": "09:04 am",
+        "heartRate": 72,
+        "spo2": 97,
+        "temperature": 36.4,
+        "systolic": 119,
+        "diastolic": 78
+      },
+      {
+        "timestamp": "10:00",
+        "fullTime": "10:04 am",
+        "heartRate": 70,
+        "spo2": 97,
+        "temperature": 36.5,
+        "systolic": 114,
+        "diastolic": 76
+      },
+      {
+        "timestamp": "11:00",
+        "fullTime": "11:04 am",
+        "heartRate": 69,
+        "spo2": 97,
+        "temperature": 36.6,
+        "systolic": 114,
+        "diastolic": 74
+      },
+      {
+        "timestamp": "12:00",
+        "fullTime": "12:04 pm",
+        "heartRate": 67,
+        "spo2": 97,
+        "temperature": 36.7,
+        "systolic": 111,
+        "diastolic": 73
+      },
+      {
+        "timestamp": "13:00",
+        "fullTime": "01:04 pm",
+        "heartRate": 68,
+        "spo2": 97,
+        "temperature": 36.7,
+        "systolic": 108,
+        "diastolic": 73
+      },
+      {
+        "timestamp": "14:00",
+        "fullTime": "02:04 pm",
+        "heartRate": 73,
+        "spo2": 98,
+        "temperature": 36.9,
+        "systolic": 111,
+        "diastolic": 74
+      },
+      {
+        "timestamp": "15:00",
+        "fullTime": "03:04 pm",
+        "heartRate": 74,
+        "spo2": 98,
+        "temperature": 36.8,
+        "systolic": 113,
+        "diastolic": 75
+      },
+      {
+        "timestamp": "16:00",
+        "fullTime": "04:04 pm",
+        "heartRate": 79,
+        "spo2": 97,
+        "temperature": 36.8,
+        "systolic": 113,
+        "diastolic": 76
+      },
+      {
+        "timestamp": "17:00",
+        "fullTime": "05:04 pm",
+        "heartRate": 79,
+        "spo2": 97,
+        "temperature": 37,
+        "systolic": 116,
+        "diastolic": 78
+      },
+      {
+        "timestamp": "18:00",
+        "fullTime": "06:04 pm",
+        "heartRate": 80,
+        "spo2": 98,
+        "temperature": 36.9,
+        "systolic": 122,
+        "diastolic": 79
+      },
+      {
+        "timestamp": "19:00",
+        "fullTime": "07:04 pm",
+        "heartRate": 77,
+        "spo2": 97,
+        "temperature": 36.8,
+        "systolic": 124,
+        "diastolic": 80
+      },
+      {
+        "timestamp": "20:00",
+        "fullTime": "08:04 pm",
+        "heartRate": 77,
+        "spo2": 98,
+        "temperature": 36.7,
+        "systolic": 126,
+        "diastolic": 81
+      },
+      {
+        "timestamp": "21:00",
+        "fullTime": "09:04 pm",
+        "heartRate": 72,
+        "spo2": 98,
+        "temperature": 36.5,
+        "systolic": 125,
+        "diastolic": 81
+      },
+      {
+        "timestamp": "09:24 pm",
+        "fullTime": "09:24 pm",
+        "heartRate": 50,
+        "spo2": 80,
+        "temperature": 36.7,
+        "systolic": 120,
+        "diastolic": 80
+      },
+      {
+        "timestamp": "09:25 pm",
+        "fullTime": "09:25 pm",
+        "heartRate": 80,
+        "spo2": 92,
+        "temperature": 36.7,
+        "systolic": 120,
+        "diastolic": 80
+      },
+      {
+        "timestamp": "09:26 pm",
+        "fullTime": "09:26 pm",
+        "heartRate": 80,
+        "spo2": 96,
+        "temperature": 36.7,
+        "systolic": 120,
+        "diastolic": 80
+      },
+      {
+        "timestamp": "10:53 pm",
+        "fullTime": "10:53 pm",
+        "heartRate": 50,
+        "spo2": 96,
+        "temperature": 36.7,
+        "systolic": 120,
+        "diastolic": 80
+      },
+      {
+        "timestamp": "10:54 pm",
+        "fullTime": "10:54 pm",
+        "heartRate": 50,
+        "spo2": 96,
+        "temperature": 36.7,
+        "systolic": 80,
+        "diastolic": 80
+      },
+      {
+        "timestamp": "10:57 pm",
+        "fullTime": "10:57 pm",
+        "heartRate": 80,
+        "spo2": 96,
+        "temperature": 36.7,
+        "systolic": 80,
+        "diastolic": 80
+      },
+      {
+        "timestamp": "10:57 pm",
+        "fullTime": "10:57 pm",
+        "heartRate": 80,
+        "spo2": 96,
+        "temperature": 36.7,
+        "systolic": 100,
+        "diastolic": 80
+      },
+      {
+        "timestamp": "11:03 pm",
+        "fullTime": "11:03 pm",
+        "heartRate": 50,
+        "spo2": 96,
+        "temperature": 36.7,
+        "systolic": 100,
+        "diastolic": 80
+      },
+      {
+        "timestamp": "11:04 pm",
+        "fullTime": "11:04 pm",
+        "heartRate": 50,
+        "spo2": 96,
+        "temperature": 36.7,
+        "systolic": 80,
+        "diastolic": 80
+      },
+      {
+        "timestamp": "11:04 pm",
+        "fullTime": "11:04 pm",
+        "heartRate": 80,
+        "spo2": 96,
+        "temperature": 36.7,
+        "systolic": 100,
+        "diastolic": 80
+      }
+    ]
+  },
+  "notifications": [
+    {
+      "id": "NOT-001",
+      "title": "Care Team Connected",
+      "message": "Dr. Kumar Rajan has successfully linked to your patient profile.",
+      "type": "INFO",
+      "timestamp": "13/8/2026, 9:04:55 pm",
+      "isRead": true
+    },
+    {
+      "id": "NOT-1786636462096",
+      "timestamp": "13/8/2026, 9:24:22 pm",
+      "isRead": true,
+      "title": "🚨 CRITICAL OUT-OF-RANGE ALERT",
+      "message": "Saran Kumar: SpO₂ critically low (< 90%). High risk of hypoxia.; Heart rate border range (50 BPM). Attention advised.",
+      "type": "CRITICAL"
+    },
+    {
+      "id": "NOT-1786636484687",
+      "timestamp": "13/8/2026, 9:24:44 pm",
+      "isRead": true,
+      "title": "🚑 AMBULANCE CALL DISPATCHED",
+      "message": "Emergency services called for Saran Kumar (CL-P10234). Care team alerted.",
+      "type": "CRITICAL"
+    },
+    {
+      "id": "NOT-1786636540596",
+      "timestamp": "13/8/2026, 9:25:40 pm",
+      "isRead": true,
+      "title": "⚠️ ATTENTION: Target Limit Warning",
+      "message": "Saran Kumar: SpO₂ reading outside optimal target range (90-94%).",
+      "type": "ATTENTION"
+    },
+    {
+      "id": "NOT-1786641835785",
+      "timestamp": "13/8/2026, 10:53:55 pm",
+      "isRead": true,
+      "title": "⚠️ ATTENTION: Target Limit Warning",
+      "message": "Saran Kumar: Heart rate border range (50 BPM). Attention advised.",
+      "type": "ATTENTION"
+    },
+    {
+      "id": "NOT-1786641845959",
+      "timestamp": "13/8/2026, 10:54:05 pm",
+      "isRead": true,
+      "title": "🚨 CRITICAL OUT-OF-RANGE ALERT",
+      "message": "Saran Kumar: Heart rate border range (50 BPM). Attention advised.; Blood Pressure in critical range (80/80 mmHg).",
+      "type": "CRITICAL"
+    },
+    {
+      "id": "NOT-1786641946901",
+      "timestamp": "13/8/2026, 10:55:46 pm",
+      "isRead": true,
+      "title": "🚑 AMBULANCE CALL DISPATCHED",
+      "message": "Emergency services called for Saran Kumar (CL-P10234). Care team alerted.",
+      "type": "CRITICAL"
+    },
+    {
+      "id": "NOT-1786642056439",
+      "timestamp": "13/8/2026, 10:57:36 pm",
+      "isRead": true,
+      "title": "🚨 CRITICAL OUT-OF-RANGE ALERT",
+      "message": "Saran Kumar: Blood Pressure in critical range (80/80 mmHg).",
+      "type": "CRITICAL"
+    },
+    {
+      "id": "NOT-1786642437407",
+      "timestamp": "13/8/2026, 11:03:57 pm",
+      "isRead": true,
+      "title": "⚠️ ATTENTION: Target Limit Warning",
+      "message": "Saran Kumar: Heart rate border range (50 BPM). Attention advised.",
+      "type": "ATTENTION"
+    },
+    {
+      "id": "NOT-1786642453770",
+      "timestamp": "13/8/2026, 11:04:13 pm",
+      "isRead": true,
+      "title": "🚨 CRITICAL OUT-OF-RANGE ALERT",
+      "message": "Saran Kumar: Heart rate border range (50 BPM). Attention advised.; Blood Pressure in critical range (80/80 mmHg).",
+      "type": "CRITICAL"
+    }
+  ],
+  "smsLogs": [
+    {
+      "id": "SMS-001",
+      "recipient": "+91 99887 76655",
+      "message": "[CareLink Critical Alert] Saran Kumar's SpO2 fell to 92%. Immediate attention required.",
+      "timestamp": "9:04:55 pm",
+      "status": "DELIVERED"
+    },
+    {
+      "id": "SMS-1786636405854",
+      "timestamp": "9:23:25 pm",
+      "status": "DELIVERED",
+      "recipient": "9095521570",
+      "message": "[CareLink Connected] You have been added as Guardian for Saran Kumar (+91 98765 43210)."
+    },
+    {
+      "id": "SMS-1786636462099",
+      "timestamp": "9:24:22 pm",
+      "status": "DELIVERED",
+      "recipient": "+91 98765 11223",
+      "message": "[CareLink CRITICAL] Saran Kumar vitals out of range! SpO₂: 80%, Heart Rate: 50 BPM."
+    },
+    {
+      "id": "SMS-1786636484690",
+      "timestamp": "9:24:44 pm",
+      "status": "DELIVERED",
+      "recipient": "+91 98765 11223",
+      "message": "[CareLink EMERGENCY] Ambulance dispatched for Saran Kumar. Please contact hospital immediately."
+    },
+    {
+      "id": "SMS-1786636540601",
+      "timestamp": "9:25:40 pm",
+      "status": "DELIVERED",
+      "recipient": "+91 98765 11223",
+      "message": "[CareLink ATTENTION] Saran Kumar vitals out of range! SpO₂: 92%."
+    },
+    {
+      "id": "SMS-1786641822228",
+      "timestamp": "10:53:42 pm",
+      "status": "DELIVERED",
+      "recipient": "9095521570",
+      "message": "[CareLink Connected] You have been added as Guardian for Saran Kumar (+91 98765 43210)."
+    },
+    {
+      "id": "SMS-1786641835790",
+      "timestamp": "10:53:55 pm",
+      "status": "DELIVERED",
+      "recipient": "+91 98765 11223",
+      "message": "[CareLink ATTENTION] Saran Kumar vitals out of range! Heart Rate: 50 BPM."
+    },
+    {
+      "id": "SMS-1786641845963",
+      "timestamp": "10:54:05 pm",
+      "status": "DELIVERED",
+      "recipient": "+91 98765 11223",
+      "message": "[CareLink CRITICAL] Saran Kumar vitals out of range! Heart Rate: 50 BPM, Blood Pressure: 80/80 mmHg."
+    },
+    {
+      "id": "SMS-1786641946905",
+      "timestamp": "10:55:46 pm",
+      "status": "DELIVERED",
+      "recipient": "+91 98765 11223",
+      "message": "[CareLink EMERGENCY] Ambulance dispatched for Saran Kumar. Please contact hospital immediately."
+    },
+    {
+      "id": "SMS-1786642056444",
+      "timestamp": "10:57:36 pm",
+      "status": "DELIVERED",
+      "recipient": "+91 98765 11223",
+      "message": "[CareLink CRITICAL] Saran Kumar vitals out of range! Blood Pressure: 80/80 mmHg."
+    },
+    {
+      "id": "SMS-1786642437412",
+      "timestamp": "11:03:57 pm",
+      "status": "DELIVERED",
+      "recipient": "+91 98765 11223",
+      "message": "[CareLink ATTENTION] Saran Kumar vitals out of range! Heart Rate: 50 BPM."
+    },
+    {
+      "id": "SMS-1786642453775",
+      "timestamp": "11:04:13 pm",
+      "status": "DELIVERED",
+      "recipient": "+91 98765 11223",
+      "message": "[CareLink CRITICAL] Saran Kumar vitals out of range! Heart Rate: 50 BPM, Blood Pressure: 80/80 mmHg."
+    }
+  ]
+}
