@@ -52,7 +52,7 @@ export const DoctorDashboard = ({ onOpenSimulator }) => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', gap: '0.75rem' }} className="app-dashboard-actions">
           <Link to="/doctor-requests" className="btn btn-secondary">
             <UserCheck size={16} /> Pending Requests ({pendingRequests.length})
           </Link>

@@ -268,7 +268,7 @@ export const SensorSimulator = ({ isOpen, onClose }) => {
             QUICK PRESET SCENARIOS (Sends SMS from 7598974652 → 9095521570)
           </span>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.65rem' }}>
+          <div className="app-simulator-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.65rem' }}>
             <button
               onClick={() => applyPreset('NORMAL')}
               className="btn btn-secondary btn-sm"

@@ -43,7 +43,7 @@ export const SmsSimulation = ({ isOpen, onClose }) => {
       padding: '1rem'
     }}>
       {/* Mobile Smartphone Frame Wrapper */}
-      <div style={{
+      <div className="app-sms-simulation-frame" style={{
         maxWidth: '420px',
         width: '100%',
         height: '760px',

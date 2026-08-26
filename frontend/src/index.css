@@ -347,6 +347,42 @@ body {
   .app-navbar-hide-mobile {
     display: none !important;
   }
+
+  /* Responsive Notification Panel */
+  .app-notification-panel {
+    top: 70px !important;
+    right: 1rem !important;
+    left: 1rem !important;
+    width: auto !important;
+    max-height: calc(100vh - 90px) !important;
+  }
+
+  /* Responsive Sensor Simulator Presets */
+  .app-simulator-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Responsive SMS Simulation Mobile Phone frame */
+  .app-sms-simulation-frame {
+    height: 100vh !important;
+    max-height: 100vh !important;
+    border-radius: 0px !important;
+    border: none !important;
+  }
+
+  /* Responsive Dashboard Action Buttons */
+  .app-dashboard-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 0.5rem !important;
+  }
+
+  .app-dashboard-actions > a,
+  .app-dashboard-actions > button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
 }
 
 /* Form Styling Additions for Light Theme */

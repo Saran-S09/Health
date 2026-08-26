@@ -64,7 +64,7 @@ export const PatientDashboard = ({ onOpenSimulator, onOpenAddMember }) => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', gap: '0.75rem' }} className="app-dashboard-actions">
           <button onClick={onOpenSimulator} className="btn btn-primary">
             <Sliders size={16} /> Sensor Simulator
           </button>

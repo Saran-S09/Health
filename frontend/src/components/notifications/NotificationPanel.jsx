@@ -16,7 +16,7 @@ export const NotificationPanel = ({ isOpen, onClose }) => {
       width: '380px',
       maxHeight: '520px',
       zIndex: 8500
-    }} className="glass-panel">
+    }} className="glass-panel app-notification-panel">
       {/* Header */}
       <div style={{
         display: 'flex',

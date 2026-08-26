@@ -11,7 +11,7 @@ export const PatientCareTeam = ({ onOpenAddMember }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>
             Patient Care Team Management
@@ -21,9 +21,11 @@ export const PatientCareTeam = ({ onOpenAddMember }) => {
           </p>
         </div>
 
-        <button onClick={onOpenAddMember} className="btn btn-primary">
-          <UserPlus size={16} /> Add Care Member
-        </button>
+        <div className="app-dashboard-actions">
+          <button onClick={onOpenAddMember} className="btn btn-primary">
+            <UserPlus size={16} /> Add Care Member
+          </button>
+        </div>
       </div>
 
       {/* Connection Requests Manager Section */}
