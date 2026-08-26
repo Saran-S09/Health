@@ -9,7 +9,7 @@ export const PatientVitals = ({ onOpenSimulator }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div className="mobile-page-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
           <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>
             Telemetry & Vital Threshold Configuration
@@ -99,7 +99,7 @@ export const PatientVitals = ({ onOpenSimulator }) => {
           Configured Clinical Supplementary Monitoring Thresholds
         </h3>
 
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
+        <table className="mobile-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid var(--border-color)', textAlign: 'left', color: 'var(--text-muted)' }}>
               <th style={{ padding: '0.75rem' }}>Vital Metric</th>

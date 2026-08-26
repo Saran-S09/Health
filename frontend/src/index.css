@@ -129,6 +129,7 @@ body {
 .main-layout {
   display: flex;
   flex: 1;
+  min-width: 0;
 }
 
 .content-area {
@@ -137,6 +138,12 @@ body {
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
+  min-width: 0;
+}
+
+.app-mobile-menu-button,
+.app-mobile-menu-backdrop {
+  display: none;
 }
 
 /* Buttons */
@@ -291,27 +298,141 @@ body {
 
 @media (max-width: 768px) {
   .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
-  .content-area { padding: 1rem; }
+  .content-area { padding: 1rem; overflow: hidden; }
+
+  .app-auth-page {
+    min-height: 100vh !important;
+    align-items: flex-start !important;
+    padding: 1rem !important;
+  }
+
+  .app-login-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+    margin: auto 0;
+  }
+
+  .app-login-form {
+    order: -1;
+  }
+
+  .app-login-form,
+  .app-register-form {
+    padding: 1.25rem !important;
+    border-radius: 14px !important;
+  }
+
+  .app-demo-account {
+    align-items: flex-start !important;
+    gap: 0.55rem !important;
+    padding: 0.75rem !important;
+  }
+
+  .app-demo-account > div:first-child {
+    min-width: 0;
+  }
+
+  .app-demo-account > div:first-child > div:last-child {
+    min-width: 0;
+  }
+
+  .app-demo-account span,
+  .app-demo-account div {
+    overflow-wrap: anywhere;
+  }
+
+  .app-register-role-grid,
+  .app-register-fields {
+    grid-template-columns: 1fr !important;
+  }
+
+  .content-area > div,
+  .content-area .glass-panel {
+    min-width: 0;
+  }
+
+  .content-area h2 {
+    font-size: 1.15rem !important;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  .mobile-page-header {
+    align-items: stretch !important;
+    flex-direction: column !important;
+    gap: 0.85rem !important;
+  }
+
+  .mobile-page-header > .mobile-page-search {
+    width: 100% !important;
+  }
+
+  .mobile-page-header > .btn {
+    width: 100%;
+  }
+
+  .mobile-card-row {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  .mobile-card-row > .btn {
+    width: 100%;
+  }
+
+  .content-area table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .content-area .glass-panel {
+    padding: 1rem !important;
+  }
 
   /* Responsive Main Layout */
   .main-layout {
     flex-direction: column;
   }
 
-  /* Responsive Sidebar - Horizontal scrolling on mobile */
+  /* Mobile navigation drawer */
   .app-sidebar {
-    width: 100% !important;
-    min-height: auto !important;
+    position: fixed !important;
+    top: 58px;
+    left: 0;
+    bottom: 0;
+    width: min(86vw, 300px) !important;
+    min-height: 0 !important;
+    height: calc(100vh - 58px);
     border-right: none !important;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: none !important;
     padding: 0.75rem 1rem !important;
     flex-direction: column !important;
+    transform: translateX(-105%);
+    transition: transform 0.2s ease;
+    z-index: 7900;
+    overflow-y: auto;
+    box-shadow: 12px 0 30px rgba(15, 23, 42, 0.12);
+  }
+
+  .app-sidebar.is-mobile-open {
+    transform: translateX(0);
+  }
+
+  .app-mobile-menu-backdrop {
+    display: block;
+    position: fixed;
+    inset: 58px 0 0;
+    z-index: 7800;
+    border: 0;
+    background: rgba(15, 23, 42, 0.28);
   }
 
   .app-sidebar-nav-container {
     display: flex !important;
-    flex-direction: row !important;
-    overflow-x: auto;
+    flex-direction: column !important;
+    overflow-x: visible;
     gap: 0.5rem;
     padding-bottom: 0.25rem;
     -webkit-overflow-scrolling: touch;
@@ -324,11 +445,11 @@ body {
 
   .app-sidebar-nav-container > a,
   .app-sidebar-nav-container > button {
-    display: inline-flex !important;
-    width: auto !important;
-    flex-shrink: 0;
+    display: flex !important;
+    width: 100% !important;
+    flex-shrink: 1;
     margin-top: 0 !important;
-    padding: 0.5rem 0.75rem !important;
+    padding: 0.7rem 0.75rem !important;
   }
 
   .app-sidebar-title {
@@ -342,6 +463,42 @@ body {
   /* Responsive Navbar */
   .app-navbar {
     padding: 0 1rem !important;
+  }
+
+  .app-mobile-menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    color: var(--text-main);
+    background: var(--bg-glass);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .app-navbar > div:first-child {
+    flex: 1;
+  }
+
+  .app-navbar > div:first-child {
+    min-width: 0;
+    gap: 0.65rem !important;
+  }
+
+  .app-navbar > div:first-child > div:last-child {
+    min-width: 0;
+  }
+
+  .app-navbar > div:first-child p {
+    display: none;
+  }
+
+  .app-navbar > div:last-child {
+    flex-shrink: 0;
+    gap: 0.5rem !important;
   }
 
   .app-navbar-hide-mobile {
@@ -382,6 +539,53 @@ body {
   .app-dashboard-actions > button {
     width: 100% !important;
     justify-content: center !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-area {
+    padding: 0.75rem;
+  }
+
+  .app-navbar {
+    height: 58px !important;
+    padding: 0 0.75rem !important;
+  }
+
+  .app-navbar > div:first-child > div:first-child {
+    width: 32px !important;
+    height: 32px !important;
+    flex-shrink: 0;
+  }
+
+  .app-navbar > div:first-child > div:first-child svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .app-navbar h1 {
+    font-size: 1rem !important;
+  }
+
+  .app-navbar h1 span {
+    font-size: 0.65rem !important;
+    margin-left: 3px !important;
+    padding: 1px 4px !important;
+  }
+
+  .app-navbar button {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .app-sidebar {
+    padding: 0.6rem 0.75rem !important;
+  }
+
+  .app-sidebar-nav-container > a,
+  .app-sidebar-nav-container > button {
+    font-size: 0.78rem !important;
+    padding: 0.45rem 0.65rem !important;
   }
 }
 

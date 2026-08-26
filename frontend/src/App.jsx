@@ -36,6 +36,7 @@ const AppContent = () => {
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isSmsDrawerOpen, setIsSmsDrawerOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // If user is not authenticated, show only Login or Register route
   if (!currentUser) {
@@ -51,10 +52,18 @@ const AppContent = () => {
   return (
     <div className="app-container">
       {/* Main App Navigation */}
-      <Navbar onToggleNotifications={() => setIsNotificationsOpen(!isNotificationsOpen)} />
+      <Navbar
+        onToggleNotifications={() => setIsNotificationsOpen(!isNotificationsOpen)}
+        onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        isMobileMenuOpen={isMobileMenuOpen}
+      />
 
       <div className="main-layout" style={{ paddingTop: 0 }}>
-        <Sidebar onOpenSimulator={() => setIsSimulatorOpen(true)} />
+        <Sidebar
+          onOpenSimulator={() => setIsSimulatorOpen(true)}
+          isMobileMenuOpen={isMobileMenuOpen}
+          onCloseMobileMenu={() => setIsMobileMenuOpen(false)}
+        />
 
         <main className="content-area">
           <Routes>

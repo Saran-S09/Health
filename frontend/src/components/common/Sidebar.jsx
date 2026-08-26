@@ -17,7 +17,7 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { usePatient } from '../../context/PatientContext';
 
-export const Sidebar = ({ onOpenSimulator }) => {
+export const Sidebar = ({ onOpenSimulator, isMobileMenuOpen, onCloseMobileMenu }) => {
   const { currentUser, logout } = useAuth();
   const { evaluation } = usePatient();
 
@@ -59,7 +59,9 @@ export const Sidebar = ({ onOpenSimulator }) => {
   }
 
   return (
-    <aside className="app-sidebar" style={{
+    <>
+    {isMobileMenuOpen && <button className="app-mobile-menu-backdrop" onClick={onCloseMobileMenu} aria-label="Close navigation menu" />}
+    <aside className={`app-sidebar${isMobileMenuOpen ? ' is-mobile-open' : ''}`} style={{
       width: '240px',
       backgroundColor: 'var(--bg-secondary)',
       borderRight: '1px solid var(--border-color)',
@@ -87,6 +89,7 @@ export const Sidebar = ({ onOpenSimulator }) => {
             <NavLink
               key={item.to}
               to={item.to}
+              onClick={onCloseMobileMenu}
               style={({ isActive }) => ({
                 display: 'flex',
                 alignItems: 'center',
@@ -156,5 +159,6 @@ export const Sidebar = ({ onOpenSimulator }) => {
         </button>
       </div>
     </aside>
+    </>
   );
 };

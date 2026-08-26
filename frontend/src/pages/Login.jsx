@@ -98,14 +98,14 @@ export const Login = () => {
   };
 
   return (
-    <div style={{
+    <div className="app-auth-page" style={{
       minHeight: '85vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       padding: '2rem'
     }}>
-      <div style={{ maxWidth: '960px', width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'center' }}>
+      <div className="app-login-grid" style={{ maxWidth: '960px', width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'center' }}>
         
         {/* Left Side: Demo Quick-Login Cards */}
         <div>
@@ -124,7 +124,7 @@ export const Login = () => {
                 <div
                   key={acc.id}
                   onClick={() => handleQuickFill(acc)}
-                  className="glass-panel"
+                  className="app-demo-account glass-panel"
                   style={{
                     padding: '0.85rem 1.1rem',
                     borderRadius: '12px',
@@ -169,7 +169,7 @@ export const Login = () => {
         </div>
 
         {/* Right Side: Login Form */}
-        <div className="glass-panel" style={{ padding: '2.5rem', borderRadius: '20px', backgroundColor: '#ffffff' }}>
+        <div className="app-login-form glass-panel" style={{ padding: '2.5rem', borderRadius: '20px', backgroundColor: '#ffffff' }}>
           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
             <div style={{
               width: '46px', height: '46px', borderRadius: '12px',

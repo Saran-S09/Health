@@ -15,7 +15,7 @@ export const DoctorPatients = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="mobile-page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>
             Doctor's Monitored Patient Directory
@@ -25,7 +25,7 @@ export const DoctorPatients = () => {
           </p>
         </div>
 
-        <div style={{ position: 'relative', width: '280px' }}>
+        <div className="mobile-page-search" style={{ position: 'relative', width: '280px' }}>
           <Search size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
           <input
             type="text"
@@ -45,7 +45,7 @@ export const DoctorPatients = () => {
 
           return (
             <div key={p.id} className="glass-panel glass-panel-hover" style={{ padding: '1.25rem', backgroundColor: '#ffffff' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div className="mobile-card-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                     <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)' }}>{p.name}</h4>

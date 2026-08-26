@@ -56,14 +56,14 @@ export const Register = () => {
   };
 
   return (
-    <div style={{
+    <div className="app-auth-page" style={{
       minHeight: '80vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       padding: '2rem'
     }}>
-      <div className="glass-panel" style={{ maxWidth: '500px', width: '100%', padding: '2.5rem', borderRadius: '20px', backgroundColor: '#ffffff' }}>
+      <div className="app-register-form glass-panel" style={{ maxWidth: '500px', width: '100%', padding: '2.5rem', borderRadius: '20px', backgroundColor: '#ffffff' }}>
         <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
           <div style={{
             width: '50px', height: '50px', borderRadius: '12px',
@@ -108,7 +108,7 @@ export const Register = () => {
             <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div>
                 <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>Select Role:</label>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.4rem' }}>
+                <div className="app-register-role-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.4rem' }}>
                   {['patient', 'doctor', 'nurse', 'guardian'].map(r => (
                     <button
                       key={r}
@@ -137,7 +137,7 @@ export const Register = () => {
                 <input type="text" required placeholder="e.g. Saran Kumar" value={name} onChange={e => setName(e.target.value)} style={{ width: '100%', padding: '0.6rem', borderRadius: '8px', border: '1px solid var(--border-color)', color: 'var(--text-main)' }} />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
+              <div className="app-register-fields" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
                 <div>
                   <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '0.2rem' }}>Email Address:</label>
                   <input type="email" required placeholder="name@domain.com" value={email} onChange={e => setEmail(e.target.value)} style={{ width: '100%', padding: '0.6rem', borderRadius: '8px', border: '1px solid var(--border-color)', color: 'var(--text-main)' }} />
@@ -148,7 +148,7 @@ export const Register = () => {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
+              <div className="app-register-fields" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
                 <div>
                   <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '0.2rem' }}>Age:</label>
                   <input type="number" required placeholder="42" value={age} onChange={e => setAge(e.target.value)} style={{ width: '100%', padding: '0.6rem', borderRadius: '8px', border: '1px solid var(--border-color)', color: 'var(--text-main)' }} />

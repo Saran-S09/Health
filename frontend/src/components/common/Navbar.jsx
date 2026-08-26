@@ -1,11 +1,11 @@
 import React from 'react';
-import { Activity, Bell, Shield, User, HeartPulse } from 'lucide-react';
+import { Activity, Bell, Shield, User, HeartPulse, Menu, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNotification } from '../../context/NotificationContext';
 import { usePatient } from '../../context/PatientContext';
 import { StatusBadge } from './StatusBadge';
 
-export const Navbar = ({ onToggleNotifications }) => {
+export const Navbar = ({ onToggleNotifications, onToggleMenu, isMobileMenuOpen }) => {
   const { currentUser } = useAuth();
   const { unreadCount } = useNotification();
   const { evaluation } = usePatient();
@@ -25,6 +25,15 @@ export const Navbar = ({ onToggleNotifications }) => {
       top: '0px',
       zIndex: 8000
     }}>
+      <button
+        className="app-mobile-menu-button"
+        onClick={onToggleMenu}
+        aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+        aria-expanded={isMobileMenuOpen}
+      >
+        {isMobileMenuOpen ? <X size={21} /> : <Menu size={21} />}
+      </button>
+
       {/* Brand & System Title */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <div style={{
