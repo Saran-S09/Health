@@ -312,7 +312,7 @@ export const PatientProvider = ({ children }) => {
     if (!currentUser) return;
 
     // Connect to the backend socket server
-    const socket = io('http://localhost:5000');
+    const socket = io('https://health-a1gj.onrender.com');
 
     socket.on('connect', () => {
       console.log('[Socket.IO] Connected to backend telemetry server');

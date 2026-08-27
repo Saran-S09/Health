@@ -1,9 +1,9 @@
 /**
  * CareLink Frontend API Integration Client
- * Connects React UI Contexts to Express Telemetry Backend at http://localhost:5000/api
+ * Connects React UI Contexts to the deployed CareLink backend.
  */
 
-const API_BASE = 'http://localhost:5000/api';
+export const API_BASE = 'https://health-a1gj.onrender.com/api';
 
 const fetchJSON = async (endpoint, options = {}) => {
   try {

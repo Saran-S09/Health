@@ -1,21 +1,39 @@
 #include <Wire.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <WiFiClientSecure.h>
 #include "MAX30105.h"
 #include "spo2_algorithm.h"
 
 MAX30105 particleSensor;
 
-const int BUFFER_SIZE = 100;
+const char *WIFI_SSID = "iQOO Z9x 5G";
+const char *WIFI_PASSWORD = "Saran2006";
+const char *SERVER_URL = "https://health-a1gj.onrender.com/api/sensor/upload";
+const char *API_KEY = "carelink_esp32_secret";
+const char *PATIENT_ID = "CL-P10234";
+
+const int SAMPLE_COUNT = 100;
 const uint32_t FINGER_THRESHOLD = 50000;
 const unsigned long READING_INTERVAL = 3000;
 
-uint32_t redBuffer[BUFFER_SIZE];
-uint32_t irBuffer[BUFFER_SIZE];
+uint32_t redBuffer[SAMPLE_COUNT];
+uint32_t irBuffer[SAMPLE_COUNT];
 unsigned long nextReadingAt = 0;
+
+void connectWiFi();
+bool collectSamples();
+void sendValidReading();
 
 void setup()
 {
   Serial.begin(115200);
   Wire.begin(21, 22);
+
+  WiFi.setAutoReconnect(true);
+  WiFi.persistent(false);
+  WiFi.mode(WIFI_STA);
+  connectWiFi();
 
   if (!particleSensor.begin(Wire, I2C_SPEED_STANDARD))
   {
@@ -69,9 +87,37 @@ void loop()
   }
 }
 
+void connectWiFi()
+{
+  if (WiFi.status() == WL_CONNECTED) return;
+
+  Serial.print(F("Connecting to Wi-Fi"));
+  WiFi.disconnect(true);
+  delay(250);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+  unsigned long startedAt = millis();
+  while (WiFi.status() != WL_CONNECTED && millis() - startedAt < 20000)
+  {
+    delay(500);
+    Serial.print(F("."));
+  }
+  Serial.println();
+
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    Serial.print(F("Wi-Fi connected. ESP32 IP: "));
+    Serial.println(WiFi.localIP());
+  }
+  else
+  {
+    Serial.println(F("Wi-Fi connection failed"));
+  }
+}
+
 bool collectSamples()
 {
-  for (int i = 0; i < BUFFER_SIZE; i++)
+  for (int i = 0; i < SAMPLE_COUNT; i++)
   {
     unsigned long startedAt = millis();
 
@@ -101,7 +147,7 @@ void sendValidReading()
 
   maxim_heart_rate_and_oxygen_saturation(
     irBuffer,
-    BUFFER_SIZE,
+    SAMPLE_COUNT,
     redBuffer,
     &spo2,
     &validSpO2,
@@ -127,4 +173,46 @@ void sendValidReading()
   Serial.print(F(",\"spo2\":"));
   Serial.print(spo2);
   Serial.println(F("}"));
+
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    Serial.println(F("Wi-Fi disconnected; reconnecting"));
+    connectWiFi();
+  }
+
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    Serial.println(F("Reading not uploaded: Wi-Fi unavailable"));
+    return;
+  }
+
+  WiFiClientSecure client;
+  client.setInsecure();
+  HTTPClient http;
+
+  if (!http.begin(client, SERVER_URL))
+  {
+    Serial.println(F("Could not initialize HTTP connection"));
+    return;
+  }
+
+  http.setTimeout(15000);
+  http.addHeader("Content-Type", "application/json");
+  http.addHeader("x-api-key", API_KEY);
+  String payload = String("{\"patientId\":\"") + PATIENT_ID +
+    String("\",\"heartRate\":") + heartRate +
+    String(",\"spo2\":") + spo2 + "}";
+  int responseCode = http.POST(payload);
+
+  Serial.print(F("Upload HTTP status: "));
+  Serial.println(responseCode);
+  if (responseCode > 0)
+  {
+    Serial.println(http.getString());
+  }
+  else
+  {
+    Serial.println(http.errorToString(responseCode));
+  }
+  http.end();
 }

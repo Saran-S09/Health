@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
     message: 'CareLink backend is running',
     status: 'OK'
   });
-});
+}); 
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
