@@ -8,7 +8,7 @@ import { ThresholdSettingsModal } from '../components/vitals/ThresholdSettingsMo
 
 export const NurseDashboard = ({ onOpenSimulator }) => {
   const { currentUser } = useAuth();
-  const { connectedPatients, vitals, evaluation } = usePatient();
+  const { connectedPatients, vitals, evaluation, sensorConnected } = usePatient();
   
   const [thresholdModalOpen, setThresholdModalOpen] = useState(false);
   const [selectedPatientForThresholds, setSelectedPatientForThresholds] = useState(null);
@@ -97,7 +97,20 @@ export const NurseDashboard = ({ onOpenSimulator }) => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <div>
                     <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)' }}>{p.name}</h4>
-                    <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{p.room} • ID: <strong style={{ color: 'var(--primary)', fontFamily: 'var(--font-mono)' }}>{p.id}</strong></span>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                      <span>{p.room} • ID: <strong style={{ color: 'var(--primary)', fontFamily: 'var(--font-mono)' }}>{p.id}</strong></span>
+                      {isMain && (
+                        sensorConnected ? (
+                          <span style={{ color: '#10b981', fontWeight: 700, fontSize: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
+                            ● Sensor Online
+                          </span>
+                        ) : (
+                          <span style={{ color: 'var(--text-dim)', fontSize: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
+                            ○ Sensor Offline (Simulated)
+                          </span>
+                        )
+                      )}
+                    </span>
                   </div>
                   <StatusBadge status={curStatus} />
                 </div>

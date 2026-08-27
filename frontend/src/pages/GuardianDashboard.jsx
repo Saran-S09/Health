@@ -9,7 +9,7 @@ import { StatusBadge } from '../components/common/StatusBadge';
 
 export const GuardianDashboard = ({ onOpenSimulator, onOpenSmsDrawer }) => {
   const { currentUser } = useAuth();
-  const { vitals, evaluation, patientProfile, careTeam } = usePatient();
+  const { vitals, evaluation, patientProfile, careTeam, sensorConnected } = usePatient();
   const { openEmergencyModal, isVibrating, isAlarmSounding } = useNotification();
 
   const isCritical = evaluation.status === 'CRITICAL';
@@ -67,7 +67,20 @@ export const GuardianDashboard = ({ onOpenSimulator, onOpenSmsDrawer }) => {
           <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Heart size={20} color="var(--accent-purple)" /> Monitored Patient Vitals ({patientProfile.name})
           </h3>
-          <StatusBadge status={evaluation.status} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            {sensorConnected ? (
+              <span style={{ fontSize: '0.78rem', color: '#10b981', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10b981', display: 'inline-block' }}></span>
+                ESP32 Online
+              </span>
+            ) : (
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--text-dim)', display: 'inline-block' }}></span>
+                Simulated
+              </span>
+            )}
+            <StatusBadge status={evaluation.status} />
+          </div>
         </div>
 
         <div className="grid-4">

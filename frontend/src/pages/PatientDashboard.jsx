@@ -8,7 +8,7 @@ import { StatusBadge } from '../components/common/StatusBadge';
 import { Link } from 'react-router-dom';
 
 export const PatientDashboard = ({ onOpenSimulator, onOpenAddMember }) => {
-  const { vitals, evaluation, patientProfile, careTeam, thresholds } = usePatient();
+  const { vitals, evaluation, patientProfile, careTeam, thresholds, sensorConnected } = usePatient();
   const isCritical = evaluation.status === 'CRITICAL';
 
   return (
@@ -87,9 +87,22 @@ export const PatientDashboard = ({ onOpenSimulator, onOpenAddMember }) => {
             </h3>
             <span className="pulse-indicator green" style={{ marginLeft: '4px' }}></span>
           </div>
-          <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-            Last Update: {vitals.lastUpdated}
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            {sensorConnected ? (
+              <span style={{ fontSize: '0.78rem', color: '#10b981', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10b981', display: 'inline-block' }}></span>
+                ESP32 Online
+              </span>
+            ) : (
+              <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--text-dim)', display: 'inline-block' }}></span>
+                ESP32 Offline (Simulated)
+              </span>
+            )}
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+              Last Update: {vitals.lastUpdated}
+            </span>
+          </div>
         </div>
 
         <div className="grid-4">

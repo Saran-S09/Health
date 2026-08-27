@@ -1,386 +1,179 @@
+require('dotenv').config();
+
 const fs = require('fs');
 const path = require('path');
+const mongoose = require('mongoose');
+const dns = require('dns');
+
+try {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+} catch (e) {
+  console.warn("Failed to set DNS servers", e);
+}
+
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder('ipv4first');
+}
 
 const DB_PATH = path.join(__dirname, 'db.json');
 
-// Generate realistic vitals history
-const generateHistoricalData = () => {
-  const points = [];
-  const now = new Date();
-  for (let i = 24; i >= 0; i--) {
-    const time = new Date(now.getTime() - i * 60 * 60 * 1000);
-    const hours = time.getHours().toString().padStart(2, '0') + ':00';
-    const hr = Math.floor(74 + Math.sin(i * 0.5) * 6 + (Math.random() * 4 - 2));
-    const spo2 = Math.min(100, Math.floor(98 + (Math.random() * 2 - 1)));
-    const temp = parseFloat((36.6 + (Math.sin(i * 0.3) * 0.3) + (Math.random() * 0.2 - 0.1)).toFixed(1));
-    const sys = Math.floor(118 + Math.cos(i * 0.4) * 8 + (Math.random() * 4 - 2));
-    const dia = Math.floor(78 + Math.cos(i * 0.4) * 4 + (Math.random() * 2 - 1));
+const userSchema = new mongoose.Schema({
+  id: { type: String, unique: true, required: true },
+  email: { type: String, unique: true, required: true },
+  data: { type: mongoose.Schema.Types.Mixed, required: true }
+}, { versionKey: false });
 
-    points.push({
-      timestamp: hours,
-      fullTime: time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      heartRate: hr,
-      spo2: spo2,
-      temperature: temp,
-      systolic: sys,
-      diastolic: dia
-    });
-  }
-  return points;
-};
+const keyedDataSchema = new mongoose.Schema({
+  key: { type: String, unique: true, required: true },
+  data: { type: mongoose.Schema.Types.Mixed, required: true }
+}, { versionKey: false });
 
-// Initial Seed Data
-const defaultData = {
-  users: [
-    {
-      id: "CL-P10234",
-      name: "Saran Kumar",
-      role: "patient",
-      email: "saran@example.com",
-      password: "password123",
-      phone: "+91 98765 43210",
-      age: 42,
-      gender: "Male",
-      roomNo: "Bed 4B, Ward 3",
-      surgery: "Post-Operative Cardiac Bypass (Day 3)",
-      admissionDate: "2026-08-10",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250"
-    },
-    {
-      id: "CL-D1021",
-      name: "Dr. Kumar Rajan",
-      role: "doctor",
-      title: "Chief Cardiac Surgeon, MD",
-      email: "dr.kumar@carelink.org",
-      password: "password123",
-      phone: "+91 94433 22110",
-      hospital: "Metropolitan General Hospital",
-      avatar: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=250"
-    },
-    {
-      id: "CL-N2042",
-      name: "Nurse Priya Sharma",
-      role: "nurse",
-      title: "Senior ICU/Post-Op Specialist",
-      email: "priya.n@carelink.org",
-      password: "password123",
-      phone: "+91 91234 56789",
-      department: "Post-Operative Recovery Ward B",
-      avatar: "https://images.unsplash.com/photo-1594824813571-215f396469a0?auto=format&fit=crop&q=80&w=250"
-    },
-    {
-      id: "CL-G3045",
-      name: "Ramesh Kumar (Brother)",
-      role: "guardian",
-      hasAccount: true,
-      email: "ramesh.k@example.com",
-      password: "password123",
-      phone: "+91 90955 21570",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=250"
-    },
-    // More demo users
-    {
-      id: "CL-G3001",
-      name: "Anita Sharma",
-      role: "guardian",
-      hasAccount: true,
-      email: "anita@example.com",
-      password: "password123",
-      phone: "+91 98765 43211",
-      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=250"
-    },
-    {
-      id: "CL-D3001",
-      name: "Dr. Neha Verma",
-      role: "doctor",
-      title: "Cardiologist, MD",
-      email: "neha.verma@example.com",
-      password: "password123",
-      phone: "+91 98765 43212",
-      hospital: "Metropolitan General Hospital",
-      avatar: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=250"
-    },
-    {
-      id: "CL-N3001",
-      name: "Nurse Maya",
-      role: "nurse",
-      title: "ICU Charge Nurse",
-      email: "maya.nurse@example.com",
-      password: "password123",
-      phone: "+91 98765 43213",
-      department: "Ward 3",
-      avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=250"
-    }
-  ],
-  careTeams: {
-    "CL-P10234": [
-      {
-        id: "CL-G3045",
-        name: "Ramesh Kumar (Brother)",
-        role: "Guardian",
-        phone: "+91 98765 11223",
-        status: "CONNECTED",
-        hasAccount: true
-      },
-      {
-        id: "CL-D1021",
-        name: "Dr. Kumar Rajan",
-        role: "Doctor",
-        phone: "+91 94433 22110",
-        status: "CONNECTED",
-        hasAccount: true
-      },
-      {
-        id: "CL-N2042",
-        name: "Nurse Priya Sharma",
-        role: "Nurse",
-        phone: "+91 91234 56789",
-        status: "CONNECTED",
-        hasAccount: true
-      }
-    ]
-  },
-  requests: [
-    {
-      id: "REQ-101",
-      senderId: "CL-D1021",
-      senderName: "Dr. Kumar Rajan",
-      senderRole: "doctor",
-      receiverId: "CL-P10234",
-      receiverName: "Saran Kumar",
-      receiverRole: "patient",
-      status: "CONNECTED",
-      type: "DOCTOR_PATIENT",
-      timestamp: "2026-08-11 09:30 AM"
-    },
-    {
-      id: "REQ-102",
-      senderId: "CL-N2042",
-      senderName: "Nurse Priya Sharma",
-      senderRole: "nurse",
-      receiverId: "CL-P10234",
-      receiverName: "Saran Kumar",
-      receiverRole: "patient",
-      status: "CONNECTED",
-      type: "NURSE_PATIENT",
-      timestamp: "2026-08-11 10:15 AM"
-    },
-    {
-      id: "REQ-103",
-      senderId: "CL-P10234",
-      senderName: "Saran Kumar",
-      senderRole: "patient",
-      receiverId: "CL-G3045",
-      receiverName: "Ramesh Kumar",
-      receiverRole: "guardian",
-      status: "CONNECTED",
-      type: "PATIENT_GUARDIAN",
-      timestamp: "2026-08-10 04:00 PM"
-    }
-  ],
-  vitals: {
-    "CL-P10234": {
-      heartRate: 78,
-      spo2: 98,
-      temperature: 36.7,
-      systolic: 120,
-      diastolic: 80,
-      status: "NORMAL",
-      lastUpdated: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
-    }
-  },
-  vitalsHistory: {
-    "CL-P10234": generateHistoricalData()
-  },
-  notifications: [
-    {
-      id: "NOT-001",
-      title: "Care Team Connected",
-      message: "Dr. Kumar Rajan has successfully linked to your patient profile.",
-      type: "INFO",
-      timestamp: new Date().toLocaleString(),
-      isRead: false
-    }
-  ],
-  smsLogs: [
-    {
-      id: "SMS-001",
-      fromPhone: "7598974652",
-      toPhone: "+91 90955 21570",
-      message: "[CareLink Critical Alert] Saran Kumar's SpO2 fell to 92%. Immediate attention required.",
-      timestamp: new Date().toLocaleTimeString(),
-      status: "DELIVERED"
-    }
-  ]
-};
+const requestSchema = new mongoose.Schema({
+  id: { type: String, unique: true, required: true },
+  data: { type: mongoose.Schema.Types.Mixed, required: true }
+}, { versionKey: false });
 
-// Database utility class
+const eventSchema = new mongoose.Schema({
+  id: { type: String, unique: true, required: true },
+  data: { type: mongoose.Schema.Types.Mixed, required: true }
+}, { versionKey: false });
+
+const User = mongoose.model('User', userSchema);
+const CareTeam = mongoose.model('CareTeam', keyedDataSchema);
+const Vital = mongoose.model('Vital', keyedDataSchema);
+const VitalsHistory = mongoose.model('VitalsHistory', keyedDataSchema);
+const Request = mongoose.model('Request', requestSchema);
+const Notification = mongoose.model('Notification', eventSchema);
+const SmsLog = mongoose.model('SmsLog', eventSchema);
+
 class Database {
-  constructor() {
-    this.data = { ...defaultData };
-    this.load();
-  }
-
-  load() {
-    try {
-      if (fs.existsSync(DB_PATH)) {
-        const fileContent = fs.readFileSync(DB_PATH, 'utf-8');
-        this.data = JSON.parse(fileContent);
-      } else {
-        this.save();
-      }
-    } catch (e) {
-      console.error("Failed to load db.json, using defaults:", e);
+  async connect() {
+    const uri = process.env.MONGODB_URI;
+    if (!uri || uri.includes('<db_password>')) {
+      throw new Error('MONGODB_URI is missing or still contains <db_password> in backend/.env');
     }
+    await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
+    console.log(`MongoDB connected: ${mongoose.connection.host}`);
+    await this.seedIfEmpty();
   }
 
-  save() {
-    try {
-      fs.writeFileSync(DB_PATH, JSON.stringify(this.data, null, 2), 'utf-8');
-    } catch (e) {
-      console.error("Failed to save db.json:", e);
-    }
+  async seedIfEmpty() {
+    if (await User.exists({})) return;
+    if (!fs.existsSync(DB_PATH)) throw new Error('No db.json found for the initial MongoDB seed');
+
+    const source = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
+    await User.insertMany((source.users || []).map(user => ({
+      id: user.id, email: user.email.toLowerCase(), data: user
+    })));
+    await CareTeam.insertMany(Object.entries(source.careTeams || {}).map(([key, data]) => ({ key, data })));
+    await Vital.insertMany(Object.entries(source.vitals || {}).map(([key, data]) => ({ key, data })));
+    await VitalsHistory.insertMany(Object.entries(source.vitalsHistory || {}).map(([key, data]) => ({ key, data })));
+    await Request.insertMany((source.requests || []).map(data => ({ id: data.id, data })));
+    await Notification.insertMany((source.notifications || []).map(data => ({ id: data.id, data })));
+    await SmsLog.insertMany((source.smsLogs || []).map(data => ({ id: data.id, data })));
+    console.log('MongoDB collections seeded from db.json');
   }
 
-  getUsers() {
-    return this.data.users;
+  async getUsers() {
+    const users = await User.find().lean();
+    return users.map(user => user.data);
   }
 
-  addUser(user) {
-    this.data.users.push(user);
-    this.save();
+  async addUser(user) {
+    await User.create({ id: user.id, email: user.email.toLowerCase(), data: user });
   }
 
-  getUserByEmail(email) {
-    return this.data.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+  async getUserByEmail(email) {
+    const user = await User.findOne({ email: email.toLowerCase() }).lean();
+    return user ? user.data : null;
   }
 
-  getUserById(id) {
-    return this.data.users.find(u => u.id === id);
+  async getCareTeam(patientId) {
+    const team = await CareTeam.findOne({ key: patientId }).lean();
+    return team ? team.data : [];
   }
 
-  getCareTeam(patientId) {
-    return this.data.careTeams[patientId] || [];
+  async addCareTeamMember(patientId, member) {
+    const current = await this.getCareTeam(patientId);
+    const updated = [...current.filter(existing => existing.id !== member.id), member];
+    await CareTeam.findOneAndUpdate({ key: patientId }, { key: patientId, data: updated }, { upsert: true });
   }
 
-  addCareTeamMember(patientId, member) {
-    if (!this.data.careTeams[patientId]) {
-      this.data.careTeams[patientId] = [];
-    }
-    // Remove if already exists
-    this.data.careTeams[patientId] = this.data.careTeams[patientId].filter(m => m.id !== member.id);
-    this.data.careTeams[patientId].push(member);
-    this.save();
+  async getRequests(userId) {
+    const requests = await Request.find().lean();
+    return requests.map(request => request.data)
+      .filter(request => request.senderId === userId || request.receiverId === userId);
   }
 
-  removeCareTeamMember(patientId, memberId) {
-    if (this.data.careTeams[patientId]) {
-      this.data.careTeams[patientId] = this.data.careTeams[patientId].filter(m => m.id !== memberId);
-      this.save();
-    }
+  async addRequest(request) {
+    await Request.create({ id: request.id, data: request });
   }
 
-  getRequests(userId) {
-    // Return requests where this user is sender or receiver
-    return this.data.requests.filter(r => r.senderId === userId || r.receiverId === userId);
+  async updateRequestStatus(requestId, status) {
+    const request = await Request.findOne({ id: requestId }).lean();
+    if (!request) return null;
+    const updated = { ...request.data, status };
+    await Request.updateOne({ id: requestId }, { data: updated });
+    return updated;
   }
 
-  addRequest(request) {
-    this.data.requests.push(request);
-    this.save();
-  }
-
-  updateRequestStatus(requestId, status) {
-    const req = this.data.requests.find(r => r.id === requestId);
-    if (req) {
-      req.status = status;
-      this.save();
-    }
-    return req;
-  }
-
-  getVitals(patientId) {
-    return this.data.vitals[patientId] || {
-      heartRate: 75,
-      spo2: 98,
-      temperature: 36.6,
-      systolic: 120,
-      diastolic: 80,
-      status: "NORMAL",
-      lastUpdated: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+  async getVitals(patientId) {
+    const vital = await Vital.findOne({ key: patientId }).lean();
+    return vital ? vital.data : {
+      heartRate: 75, spo2: 98, temperature: 36.6, systolic: 120, diastolic: 80,
+      status: 'NORMAL', lastUpdated: new Date().toLocaleTimeString()
     };
   }
 
-  updateVitals(patientId, vitals) {
-    this.data.vitals[patientId] = {
-      ...vitals,
-      lastUpdated: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
-    };
-    
-    // Push to history
-    if (!this.data.vitalsHistory[patientId]) {
-      this.data.vitalsHistory[patientId] = [];
-    }
+  async updateVitals(patientId, vitals) {
+    const updated = { ...vitals, lastUpdated: new Date().toLocaleTimeString([], {
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    }) };
+    await Vital.findOneAndUpdate({ key: patientId }, { key: patientId, data: updated }, { upsert: true });
+    const existing = await this.getVitalsHistory(patientId);
     const timeLabel = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    this.data.vitalsHistory[patientId].push({
-      timestamp: timeLabel,
-      fullTime: timeLabel,
-      heartRate: vitals.heartRate,
-      spo2: vitals.spo2,
-      temperature: vitals.temperature,
-      systolic: vitals.systolic,
-      diastolic: vitals.diastolic
-    });
-
-    // Keep history bounded to 30 elements
-    if (this.data.vitalsHistory[patientId].length > 30) {
-      this.data.vitalsHistory[patientId].shift();
-    }
-
-    this.save();
+    const history = [...existing, { timestamp: timeLabel, fullTime: timeLabel, ...vitals }].slice(-30);
+    await VitalsHistory.findOneAndUpdate({ key: patientId }, { key: patientId, data: history }, { upsert: true });
   }
 
-  getVitalsHistory(patientId) {
-    return this.data.vitalsHistory[patientId] || [];
+  async getVitalsHistory(patientId) {
+    const history = await VitalsHistory.findOne({ key: patientId }).lean();
+    return history ? history.data : [];
   }
 
-  getNotifications() {
-    return this.data.notifications;
+  async getNotifications() {
+    const notifications = await Notification.find().sort({ _id: 1 }).lean();
+    return notifications.map(notification => notification.data);
   }
 
-  addNotification(notification) {
-    const newNot = {
-      id: `NOT-${Date.now()}`,
-      timestamp: new Date().toLocaleString(),
-      isRead: false,
-      ...notification
+  async addNotification(notification) {
+    const newNotification = {
+      id: `NOT-${Date.now()}`, timestamp: new Date().toLocaleString(), isRead: false, ...notification
     };
-    this.data.notifications.push(newNot);
-    this.save();
-    return newNot;
+    await Notification.create({ id: newNotification.id, data: newNotification });
+    return newNotification;
   }
 
-  markNotificationsRead() {
-    this.data.notifications.forEach(n => n.isRead = true);
-    this.save();
+  async markNotificationsRead() {
+    const notifications = await Notification.find().lean();
+    await Promise.all(notifications.map(notification => Notification.updateOne(
+      { id: notification.id }, { data: { ...notification.data, isRead: true } }
+    )));
   }
 
-  getSmsLogs() {
-    return this.data.smsLogs;
+  async getSmsLogs() {
+    const logs = await SmsLog.find().sort({ _id: 1 }).lean();
+    return logs.map(log => log.data);
   }
 
-  addSmsLog(sms) {
+  async addSmsLog(sms) {
     const newSms = {
-      id: `SMS-${Date.now()}`,
-      fromPhone: sms.fromPhone || "7598974652",
-      toPhone: sms.toPhone || sms.recipient || "+91 90955 21570",
-      message: sms.message,
-      timestamp: new Date().toLocaleTimeString(),
-      status: sms.status || "DELIVERED",
-      type: sms.type || "ALERT"
+      id: `SMS-${Date.now()}`, fromPhone: sms.fromPhone || '7598974652',
+      toPhone: sms.toPhone || sms.recipient || '+91 90955 21570', message: sms.message,
+      timestamp: new Date().toLocaleTimeString(), status: sms.status || 'DELIVERED',
+      type: sms.type || 'ALERT'
     };
-    this.data.smsLogs.push(newSms);
-    this.save();
+    await SmsLog.create({ id: newSms.id, data: newSms });
     return newSms;
   }
 }

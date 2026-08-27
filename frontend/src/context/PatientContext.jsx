@@ -8,6 +8,7 @@ import { SENSOR_PRESETS, applyGradualDrift } from '../services/sensorSimulator';
 import { useNotification } from './NotificationContext';
 import { useAuth } from './AuthContext';
 import { apiService } from '../services/api';
+import { io } from 'socket.io-client';
 
 const PatientContext = createContext();
 
@@ -111,6 +112,7 @@ export const PatientProvider = ({ children }) => {
 
   // Organic live simulation toggle
   const [autoSimulate, setAutoSimulate] = useState(false);
+  const [sensorConnected, setSensorConnected] = useState(false);
 
   // Sync profile when currentUser role is patient
   useEffect(() => {
@@ -250,6 +252,108 @@ export const PatientProvider = ({ children }) => {
 
     fetchBackendData();
   }, [currentUser, patientProfile.id]);
+
+  // Poll backend vitals, history, and requests every 3 seconds for live ESP32 updates
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const pollData = async () => {
+      const activePatientId = (currentUser && currentUser.role === 'patient')
+        ? currentUser.id
+        : 'CL-P10234';
+
+      try {
+        const response = await apiService.getVitals(activePatientId);
+        const vitalsObj = (response && response.vitals) ? response.vitals : response;
+        
+        if (vitalsObj && vitalsObj.heartRate !== undefined) {
+          setVitals(vitalsObj);
+          
+          // Re-evaluate using fetched/local thresholds
+          const evalObj = (response && response.evaluation) ? response.evaluation : evaluateVitals(vitalsObj, thresholds);
+          setEvaluation(evalObj);
+
+          // Update clinician's patient list inline if staff is logged in
+          setConnectedPatients(prev => prev.map(p => {
+            if (p.id === activePatientId) {
+              return {
+                ...p,
+                status: evalObj.status,
+                lastVitals: vitalsObj
+              };
+            }
+            return p;
+          }));
+        }
+
+        const history = await apiService.getVitalsHistory(activePatientId);
+        if (history && history.length > 0) {
+          setHistoricalData(history);
+        }
+
+        // Also poll requests
+        const reqs = await apiService.getRequests(currentUser.id);
+        if (reqs) {
+          setRequests(reqs);
+        }
+      } catch (err) {
+        // Suppress warning during polling to avoid cluttering console
+      }
+    };
+
+    // Run immediately, then every 3 seconds
+    pollData();
+    const interval = setInterval(pollData, 3000);
+    return () => clearInterval(interval);
+  }, [currentUser, thresholds]);
+
+  // Socket.IO event receiver for real-time ESP32 vitals and status
+  useEffect(() => {
+    if (!currentUser) return;
+
+    // Connect to the backend socket server
+    const socket = io('http://localhost:5000');
+
+    socket.on('connect', () => {
+      console.log('[Socket.IO] Connected to backend telemetry server');
+    });
+
+    socket.on('vitalsUpdate', ({ patientId, vitals: newVitals, evaluation: newEval }) => {
+      const activePatientId = (currentUser && currentUser.role === 'patient')
+        ? currentUser.id
+        : 'CL-P10234';
+
+      if (patientId === activePatientId) {
+        setVitals(newVitals);
+        setEvaluation(newEval);
+
+        // Update clinician's patient list inline if staff is logged in
+        setConnectedPatients(prev => prev.map(p => {
+          if (p.id === patientId) {
+            return {
+              ...p,
+              status: newEval.status,
+              lastVitals: newVitals
+            };
+          }
+          return p;
+        }));
+      }
+    });
+
+    socket.on('sensorStatus', ({ status }) => {
+      setSensorConnected(status === 'CONNECTED');
+    });
+
+    socket.on('disconnect', () => {
+      console.log('[Socket.IO] Disconnected from backend telemetry server');
+      setSensorConnected(false);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [currentUser]);
 
   useEffect(() => {
     localStorage.setItem('carelink_vitals', JSON.stringify(vitals));
@@ -506,7 +610,8 @@ export const PatientProvider = ({ children }) => {
       respondToRequest,
       addSmsGuardian,
       thresholds,
-      updateThresholds
+      updateThresholds,
+      sensorConnected
     }}>
       {children}
     </PatientContext.Provider>

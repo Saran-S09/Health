@@ -8,7 +8,7 @@ import { ThresholdSettingsModal } from '../components/vitals/ThresholdSettingsMo
 
 export const DoctorDashboard = ({ onOpenSimulator }) => {
   const { currentUser } = useAuth();
-  const { connectedPatients, requests, vitals, evaluation, respondToRequest } = usePatient();
+  const { connectedPatients, requests, vitals, evaluation, respondToRequest, sensorConnected } = usePatient();
 
   const [thresholdModalOpen, setThresholdModalOpen] = useState(false);
   const [selectedPatientForThresholds, setSelectedPatientForThresholds] = useState(null);
@@ -113,8 +113,19 @@ export const DoctorDashboard = ({ onOpenSimulator }) => {
                       </span>
                       <StatusBadge status={patientStatus} size="sm" />
                     </div>
-                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
-                      {p.surgery} • {p.room} • Connected: {p.connectedSince}
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.2rem', display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                      <span>{p.surgery} • {p.room} • Connected: {p.connectedSince}</span>
+                      {isMainPatient && (
+                        sensorConnected ? (
+                          <span style={{ color: '#10b981', fontWeight: 700, fontSize: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
+                            ● Sensor Online
+                          </span>
+                        ) : (
+                          <span style={{ color: 'var(--text-dim)', fontSize: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
+                            ○ Sensor Offline (Simulated)
+                          </span>
+                        )
+                      )}
                     </p>
                   </div>
 

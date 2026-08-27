@@ -187,44 +187,17 @@
   ],
   "vitals": {
     "CL-P10234": {
-      "heartRate": 80,
+      "heartRate": 74,
       "spo2": 96,
       "temperature": 36.7,
       "systolic": 100,
       "diastolic": 80,
-      "lastUpdated": "11:04:56 pm",
+      "lastUpdated": "04:18:18 pm",
       "status": "NORMAL"
     }
   },
   "vitalsHistory": {
     "CL-P10234": [
-      {
-        "timestamp": "02:00",
-        "fullTime": "02:04 am",
-        "heartRate": 74,
-        "spo2": 97,
-        "temperature": 36.3,
-        "systolic": 118,
-        "diastolic": 78
-      },
-      {
-        "timestamp": "03:00",
-        "fullTime": "03:04 am",
-        "heartRate": 77,
-        "spo2": 98,
-        "temperature": 36.3,
-        "systolic": 123,
-        "diastolic": 79
-      },
-      {
-        "timestamp": "04:00",
-        "fullTime": "04:04 am",
-        "heartRate": 80,
-        "spo2": 97,
-        "temperature": 36.4,
-        "systolic": 124,
-        "diastolic": 80
-      },
       {
         "timestamp": "05:00",
         "fullTime": "05:04 am",
@@ -467,6 +440,33 @@
         "temperature": 36.7,
         "systolic": 100,
         "diastolic": 80
+      },
+      {
+        "timestamp": "04:01 pm",
+        "fullTime": "04:01 pm",
+        "heartRate": 91,
+        "spo2": 96,
+        "temperature": 36.7,
+        "systolic": 100,
+        "diastolic": 80
+      },
+      {
+        "timestamp": "04:01 pm",
+        "fullTime": "04:01 pm",
+        "heartRate": 130,
+        "spo2": 96,
+        "temperature": 36.7,
+        "systolic": 100,
+        "diastolic": 80
+      },
+      {
+        "timestamp": "04:18 pm",
+        "fullTime": "04:18 pm",
+        "heartRate": 74,
+        "spo2": 96,
+        "temperature": 36.7,
+        "systolic": 100,
+        "diastolic": 80
       }
     ]
   },
@@ -549,6 +549,14 @@
       "isRead": true,
       "title": "🚨 CRITICAL OUT-OF-RANGE ALERT",
       "message": "Saran Kumar: Heart rate border range (50 BPM). Attention advised.; Blood Pressure in critical range (80/80 mmHg).",
+      "type": "CRITICAL"
+    },
+    {
+      "id": "NOT-1787740318039",
+      "timestamp": "26/8/2026, 4:01:58 pm",
+      "isRead": false,
+      "title": "🚨 CRITICAL OUT-OF-RANGE ALERT",
+      "message": "Saran Kumar: Heart rate critically tachycardic (130 BPM).",
       "type": "CRITICAL"
     }
   ],
@@ -636,6 +644,15 @@
       "status": "DELIVERED",
       "recipient": "+91 98765 11223",
       "message": "[CareLink CRITICAL] Saran Kumar vitals out of range! Heart Rate: 50 BPM, Blood Pressure: 80/80 mmHg."
+    },
+    {
+      "id": "SMS-1787740318053",
+      "fromPhone": "7598974652",
+      "toPhone": "+91 98765 11223",
+      "message": "[CareLink CRITICAL] Saran Kumar vitals out of range! Heart Rate: 130 BPM.",
+      "timestamp": "4:01:58 pm",
+      "status": "DELIVERED",
+      "type": "CRITICAL"
     }
   ]
 }
