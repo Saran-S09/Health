@@ -9,6 +9,12 @@ const { SerialPort } = require('serialport');
 const { ReadlineParser } = require('@serialport/parser-readline');
 
 const app = express();
+app.get('/', (req, res) => {
+  res.json({
+    message: 'CareLink backend is running',
+    status: 'OK'
+  });
+});
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
